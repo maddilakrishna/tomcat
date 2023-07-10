@@ -4,6 +4,11 @@ pipeline {
     GCP_PROJECT = credentials('GCP_PROJECT')
   }
   stages {
+        stage("Checkout") {
+    steps {
+        sh 'git clone https://github.com/Poojitha2022/nodeapp_test.git'
+      }
+    }
     stage('Example') {
       steps {
         withCredentials([string(credentialsId: 'GCP_CREDENTIALS', variable: 'GCP_CREDENTIALS')]) {
