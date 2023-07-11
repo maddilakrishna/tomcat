@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  environment {
-    GCP_PROJECT = credentials('GCP_PROJECT')
-  }
   stages {
     stage("Checkout") {
         steps {
