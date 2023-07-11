@@ -10,6 +10,7 @@ pipeline {
         steps {
         withCredentials([usernameColonPassword(credentialsId: '7b112cd2-2be5-470d-a959-8dfb349f1de5', variable: 'GCP_PROJECT'), file(credentialsId: '3e4bdfc2-80cd-473b-a505-090d40869d34', variable: 'GCP_CREDENTIALS')]) {
          sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
+          sh "docker login -u krishnavirat -p Krishna@2000"
         }
       }
     }
