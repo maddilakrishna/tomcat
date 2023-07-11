@@ -15,8 +15,10 @@ pipeline {
     }
     stage("Docker Pull") {
       steps {
+        withCredentials([usernameColonPassword(credentialsId: 'dockerHub', variable: 'dockerHub')]) {
         sh 'docker pull krishnavirat/apachetomcat:tag2'
-      }
+       }
+     }
     }
     stage("Docker tag") {
       steps {     
