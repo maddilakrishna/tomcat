@@ -32,5 +32,17 @@ pipeline {
              sh 'docker push gcr.io/model-argon-389809/tomcat:test1'
            }
         }
+     stage("cluster create") {
+       steps {
+          sh 'gcloud config set compute/zone asia-south1-b'
+          sh 'gcloud container clusters create tomcat-cluster --num-nodes 3'
+       }
      }
-  }    
+    stage("create & expose deploy") {
+       steps {
+         sh 'kubectl create deployment apachetomcat --image=gcr.io/	model-argon-389809/tomcat:test1'
+         sh 'kubectl expose deployment apachetomcat --type=LoadBalancer --port 80 --target-port 8080'
+       }
+    }
+  }  
+}    
