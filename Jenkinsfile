@@ -44,7 +44,7 @@ pipeline {
      }
     stage("Create & expose deploy") {
        steps {
-         sh 'kubectl create deployment apachetomcat --image=gcr.io/	model-argon-389809/tomcat:test1'
+         sh 'kubectl create deployment apachetomcat --image=gcr.io/model-argon-389809/tomcat:test1'
          sh 'kubectl expose deployment apachetomcat --type=LoadBalancer --port 80 --target-port 8080'
        }
     }
