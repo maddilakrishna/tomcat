@@ -39,7 +39,6 @@ pipeline {
         }
      stage("cluster create") {
        steps {
-          sh 'apt-get update'
           sh 'gcloud config set compute/zone asia-south1-b'
           sh 'gcloud container clusters create tomcat-cluster --num-nodes 3'
        }
