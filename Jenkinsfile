@@ -1,6 +1,11 @@
 pipeline {
   agent any
   stages {
+    stage("clear workspace"){
+        steps {
+          sh 'sudo rm -rvf t*'
+        }
+    }
     stage("Checkout") {
         steps {
         sh 'git clone https://github.com/KrishnaMaddila/tomcat.git'
@@ -34,6 +39,7 @@ pipeline {
         }
      stage("cluster create") {
        steps {
+          sh 'gcloud components install kubectl'
           sh 'gcloud config set compute/zone asia-south1-b'
           sh 'gcloud container clusters create tomcat-cluster --num-nodes 3'
        }
