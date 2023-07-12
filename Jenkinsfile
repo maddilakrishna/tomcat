@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage("clear workspace"){
         steps {
-          sh 'sudo rm -rvf t*'
+          sh 'rm -rvf t*'
         }
     }
     stage("Checkout") {
