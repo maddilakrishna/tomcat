@@ -27,7 +27,8 @@ pipeline {
       }
     }
     stage("docker push") { 
-        steps {        
+        steps {
+             sh 'gcloud auth configure-docker'
              sh 'docker push gcr.io/model-argon-389809/tomcat:test1'
            }
         }
