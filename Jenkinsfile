@@ -39,7 +39,7 @@ pipeline {
         }
      stage("cluster create") {
        steps {
-          sh 'gcloud components install kubectl'
+          sh 'sudo apt-get install kubectl'
           sh 'gcloud config set compute/zone asia-south1-b'
           sh 'gcloud container clusters create tomcat-cluster --num-nodes 3'
        }
