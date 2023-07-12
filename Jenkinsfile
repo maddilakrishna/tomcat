@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage("clear workspace"){
+    stage("Clear Workspace"){
         steps {
           sh 'rm -rvf t*'
         }
@@ -18,7 +18,7 @@ pipeline {
         }
       }
     }
-    stage("Docker Pull") {
+    stage("Docker pull") {
       steps {
         withCredentials([usernameColonPassword(credentialsId: 'dockerHub', variable: 'dockerHub')]) {
         sh "docker login -u krishnavirat -p Krishna@2000"
@@ -31,7 +31,7 @@ pipeline {
          sh 'docker tag krishnavirat/apachetomcat:tag2 gcr.io/model-argon-389809/tomcat:test1'
       }
     }
-    stage("docker push") { 
+    stage("Docker push") { 
         steps {
              sh 'gcloud auth configure-docker'
              sh 'docker push gcr.io/model-argon-389809/tomcat:test1'
@@ -40,11 +40,12 @@ pipeline {
      stage("cluster create") {
        steps {
           sh 'apt-get install kubectl'
+          sh 'apt-get update'
           sh 'gcloud config set compute/zone asia-south1-b'
           sh 'gcloud container clusters create tomcat-cluster --num-nodes 3'
        }
      }
-    stage("create & expose deploy") {
+    stage("Create & expose deploy") {
        steps {
          sh 'kubectl create deployment apachetomcat --image=gcr.io/	model-argon-389809/tomcat:test1'
          sh 'kubectl expose deployment apachetomcat --type=LoadBalancer --port 80 --target-port 8080'
