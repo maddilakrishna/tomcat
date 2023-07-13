@@ -1,11 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage("Clear Workspace"){
-        steps {
-          sh 'rm -rvf t*'
-        }
-    }
     stage("Checkout") {
         steps {
         sh 'git clone https://github.com/KrishnaMaddila/tomcat.git'
