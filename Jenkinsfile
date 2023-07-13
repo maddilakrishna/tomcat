@@ -8,7 +8,7 @@ pipeline {
     }
     stage("Checkout") {
         steps {
-        sh 'git clone https://github.com/KrishnaMaddila/tomcat.git'
+        sh 'git branch: 'main', url: 'https://github.com/KrishnaMaddila/tomcat.git''
       }
     }
     stage('GCP Auth') {
