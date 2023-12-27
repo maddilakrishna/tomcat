@@ -20,7 +20,7 @@ pipeline {
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: 'e3db509b-aef4-42df-95b5-260cc8e9b505', variable: 'Docker_credentials')]) {
+        withCredentials([usernameColonPassword(credentialsId: 'cc4576a5-5d72-495e-aef7-74b11ce9e03e', variable: 'Docker_credentials')]) {
         sh "docker login -u krishnavirat -p Krishna@2000"
         sh 'docker pull krishnavirat/apachetomcat:tag2'
        }
