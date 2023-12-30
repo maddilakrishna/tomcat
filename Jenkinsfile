@@ -13,14 +13,14 @@ pipeline {
     }
     stage('GCP Auth') {
         steps {
-         withCredentials([usernameColonPassword(credentialsId: 'GCP_PROJECT', variable: 'GCP_PROJECT'), file(credentialsId: 'GCP_CREDENTIALS', variable: 'GCP_CREDENTIALS')]) {
+         withCredentials([usernameColonPassword(credentialsId: 'fb1904be-ba23-43e4-b5d3-9b8941900198', variable: 'GCP_PROJECTS'), file(credentialsId: 'cf29bd52-a354-4ca2-afea-ae0859a0915d', variable: 'GCP_CREDENTIALS')]) {
          sh 'gcloud auth activate-service-account --key-file=$GCP_CREDENTIALS'
         }
       }
     }
     stage("Docker pull") {
       steps {
-        withCredentials([usernameColonPassword(credentialsId: 'cc4576a5-5d72-495e-aef7-74b11ce9e03e', variable: 'Docker_credentials')]) {
+        withCredentials([usernameColonPassword(credentialsId: 'af36a9d5-a57d-4e4e-9fc6-821581169971', variable: 'DOCKER')]) {
         sh "docker login -u krishnavirat -p Krishna@2000"
         sh 'docker pull krishnavirat/apachetomcat:tag2'
        }
