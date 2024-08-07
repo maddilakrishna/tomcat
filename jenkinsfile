@@ -3,12 +3,12 @@ pipeline {
     stages {
             stage("Clear Workspace"){
         steps {
-          sh 'rm -rvf h*'
+          sh 'rm -rvf t*'
         }
     }
         stage('Checkout Code') {
             steps {
-                sh 'git clone https://admin-devops2023@bitbucket.org/honebi/honebi-pagebuilder.git'
+                sh 'https://github.com/maddilakrishna/tomcat.git'
 
             }
         }
