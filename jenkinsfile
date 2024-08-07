@@ -1,0 +1,91 @@
+pipeline {
+    agent { label 'slave' }
+    stages {
+            stage("Clear Workspace"){
+        steps {
+          sh 'rm -rvf h*'
+        }
+    }
+        stage('Checkout Code') {
+            steps {
+                sh 'git clone https://admin-devops2023@bitbucket.org/honebi/honebi-pagebuilder.git'
+
+            }
+        }
+        stage('Connect to Remote Server') {
+            steps {
+                script {
+                    sh '''
+                    echo "Starting SSH connection..."
+                    ssh honeybi@192.168.122.11 << 'EOF'
+                        echo "Connected to remote server"
+                    '''
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    sh '''
+                    ssh honeybi@192.168.122.11 << 'EOF'
+                        echo "Building Docker images..."
+                        cd /home/honeybi/pagebuilder-docker/pagebuilder
+                        docker build -t pagebuilder:cicd .
+                        cd /home/honeybi/pagebuilder-docker/controller
+                        docker build -t controller:cicd .
+                        cd /home/honeybi/pagebuilder-docker/store
+                        docker build -t store:cicd .
+                        cd /home/honeybi/pagebuilder-docker/simulator
+                        docker build -t simulator:cicd .
+                        cd /home/honeybi/pagebuilder-docker/navbar
+                        docker build -t navbar:cicd .
+                        exit
+                    EOF
+                    '''
+                }
+            }
+        }
+
+        stage('Run npm Build') {
+            steps {
+                script {
+                    sh '''
+                    ssh honeybi@192.168.122.11 << 'EOF'
+                        echo "Running npm build..."
+                        cd /home/honeybi/pagebuilder-docker/pagebuilder
+                        npm run build
+                        cd /home/honeybi/pagebuilder-docker/controller
+                        npm run build
+                        cd /home/honeybi/pagebuilder-docker/navbar
+                        npm run build
+                        cd /home/honeybi/pagebuilder-docker/store
+                        npm run build
+                        cd /home/honeybi/pagebuilder-docker/simulator
+                        npm run build
+                        exit
+                    EOF
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy Docker Containers') {
+            steps {
+                script {
+                    sh '''
+                    ssh honeybi@192.168.122.11 << 'EOF'
+                        echo "Deploying containers..."
+                        docker run -d -p 9013:9013 pagebuilder:cicd
+                        docker run -d -p 9015:9015 controller:cicd
+                        docker run -d -p 9014:9014 navbar:cicd
+                        docker run -d -p 9016:9016 store:cicd
+                        docker run -d -p 9012:9012 simulator:cicd
+                        exit
+                    EOF
+                    '''
+                }
+            }
+        }
+    }
+}
